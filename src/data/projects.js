@@ -30,7 +30,7 @@ export const projects = [
       "Fullstack AI-powered resume builder that generates professional resumes.",
     tech: "React, Node.js, OpenAI API, Tailwind",
     screenshots: [AI1, AI2, AI3, AI4, AI5, AI8, AI9, AI10, AI11, AI12],
-    github: "https://github.com/yourusername/ai-resume-builder",
+    github: "https://github.com/eban-19/AI_Resume_Builder",
     live: "https://ai-resume.vercel.app",
   },
   {
@@ -39,7 +39,7 @@ export const projects = [
       "Complete e-commerce system with admin panel and order management.",
     tech: "React, Node.js, MongoDB, Tailwind",
     screenshots: [EC1, EC2, EC3, EC4, EC5, EC6, EC7, ADMIN],
-    github: "https://github.com/yourusername/ecommerce",
+    github: "https://github.com/eban-19/Style_Street",
     live: "https://ecommerce.vercel.app",
   },
   {
@@ -48,7 +48,7 @@ export const projects = [
     "Full-stack web application for fair tariff calculation and monitoring with real-time pricing logic.",
   tech: "React, Node.js, Express, MongoDB, Tailwind",
   screenshots: [FT1, FT2, FT3, FT4],
-  github: "https://github.com/yourusername/fair-tariff",
+  github: "https://github.com/eban-19/Fair_Tariff",
   live: "https://fair-tariff.vercel.app",
 },
 ];
