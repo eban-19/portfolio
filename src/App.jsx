@@ -8,7 +8,7 @@ export default function App() {
       <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-md z-50 shadow-md">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-white tracking-wide">
-            
+
           </h1>
           <div className="space-x-6 text-sm font-medium">
             <a href="#about" className="hover:text-blue-400 transition">
@@ -59,9 +59,20 @@ export default function App() {
             About Me
           </h3>
           <p className="text-gray-400 leading-relaxed">
-            I am a Full-Stack Developer experienced in voting systems, admin
-            dashboards, e-commerce platforms, and AI-powered applications. I
-            focus on clean, secure, and scalable solutions.
+            I am a passionate Full Stack Web Developer with strong experience in building
+            modern, scalable, and user-focused web applications. I enjoy transforming
+            complex problems into clean, efficient, and intuitive solutions.
+
+            I have worked on full-stack projects including e-commerce platforms with admin
+            dashboards, AI-powered applications, and real-world systems that focus on
+            performance, security, and usability. I am comfortable working across the
+            entire stack — from responsive front-end interfaces to robust back-end APIs
+            and databases.
+
+            I am continuously learning new technologies, improving best practices, and
+            building projects that solve real problems. My goal is to grow as a software
+            engineer and contribute to impactful, production-ready applications.
+
           </p>
         </div>
       </section>
@@ -106,7 +117,7 @@ export default function App() {
           </p>
           <div className="flex justify-center gap-8">
             <a
-              href="https://github.com/"
+              href="https://github.com/eban-19"
               className="hover:text-blue-400 transition"
             >
               <Github size={28} />
@@ -118,7 +129,7 @@ export default function App() {
               <Linkedin size={28} />
             </a>
             <a
-              href="mailto:example@email.com"
+              href="mailto:ebisasutuma@gmail.com"
               className="hover:text-blue-400 transition"
             >
               <Mail size={28} />
@@ -129,7 +140,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="py-8 bg-gray-900 text-center text-sm text-gray-500 border-t border-gray-800">
-        © {new Date().getFullYear()} Bishuu. All rights reserved.
+        © {new Date().getFullYear()}. All rights reserved.
       </footer>
     </div>
   );
