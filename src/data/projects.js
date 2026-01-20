@@ -31,7 +31,6 @@ export const projects = [
     tech: "React, Node.js, OpenAI API, Tailwind",
     screenshots: [AI1, AI2, AI3, AI4, AI5, AI8, AI9, AI10, AI11, AI12],
     github: "https://github.com/eban-19/AI_Resume_Builder",
-    live: "https://ai-resume.vercel.app",
   },
   {
     title: "Fullstack E-Commerce Platform",
@@ -40,7 +39,6 @@ export const projects = [
     tech: "React, Node.js, MongoDB, Tailwind",
     screenshots: [EC1, EC2, EC3, EC4, EC5, EC6, EC7, ADMIN],
     github: "https://github.com/eban-19/Style_Street",
-    live: "https://ecommerce.vercel.app",
   },
   {
   title: "Fair Tariff Web Application",
@@ -49,6 +47,5 @@ export const projects = [
   tech: "React, Node.js, Express, MongoDB, Tailwind",
   screenshots: [FT1, FT2, FT3, FT4],
   github: "https://github.com/eban-19/Fair_Tariff",
-  live: "https://fair-tariff.vercel.app",
 },
 ];
