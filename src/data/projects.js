@@ -23,6 +23,14 @@ import FT2 from "../assets/ft_2.png";
 import FT3 from "../assets/ft_3.png";
 import FT4 from "../assets/ft_4.png";
 
+import V1 from "../assets/voting_1.png";
+import V2 from "../assets/voting_2.png";
+import V3 from "../assets/voting_3.png";
+import V4 from "../assets/voting_4.png";
+import V5 from "../assets/voting_5.png";
+import V6 from "../assets/voting_6.png";
+import V7 from "../assets/voting_7.png";
+
 export const projects = [
   {
     title: "AI Resume Builder",
@@ -47,5 +55,13 @@ export const projects = [
   tech: "React, Node.js, Express, MongoDB, Tailwind",
   screenshots: [FT1, FT2, FT3, FT4],
   github: "https://github.com/eban-19/Fair_Tariff",
+},
+{
+  title: "Haramaya Voting System",
+  description:
+    "Role-based Android voting application built with Kotlin and SQLite. Supports student voting, admin candidate management, vote resetting, deadline setting, and winner analytics.",
+  tech: "Kotlin, SQLite, Android SDK, RecyclerView, XML",
+  screenshots: [V1, V2, V3, V4, V5, V6, V7],
+  github: "https://github.com/eban-19/HaramayaVoting",
 },
 ];
