@@ -162,7 +162,7 @@ export default function App() {
               <Github size={28} />
             </a>
             <a
-              href="https://linkedin.com/"
+              href="https://www.linkedin.com/in/ebisa-sutuma-ba77013a1/"
               className="hover:text-blue-400 transition"
               target="_blank"
               rel="noopener noreferrer"
