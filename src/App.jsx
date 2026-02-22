@@ -13,47 +13,47 @@ export default function App() {
     <div className="min-h-screen bg-gray-950 text-gray-100 font-sans">
       {/* Navbar */}
       <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-md z-50 shadow-md">
-  <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-    
-    {/* Logo */}
-    <a href="#" className="flex items-center gap-3">
-      <img
-        src={Logo}
-        alt="Eban.dev logo"
-        className="h-10 w-10 object-contain"
-      />
-      <span className="text-2xl font-bold text-white tracking-wide">
-        Eban.dev
-      </span>
-    </a>
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
 
-    {/* Desktop Links */}
-    <div className="hidden md:flex space-x-6 text-sm font-medium">
-      <a href="#about" className="hover:text-blue-400 transition">About</a>
-      <a href="#skills" className="hover:text-blue-400 transition">Skills</a>
-      <a href="#projects" className="hover:text-blue-400 transition">Projects</a>
-      <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
-    </div>
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-3">
+            <img
+              src={Logo}
+              alt="Eban.dev logo"
+              className="h-10 w-10 object-contain"
+            />
+            <span className="text-2xl font-bold text-white tracking-wide">
+              Eban.dev
+            </span>
+          </a>
 
-    {/* Mobile Menu Button */}
-    <button
-      className="md:hidden text-white"
-      onClick={() => setMenuOpen(!menuOpen)}
-    >
-      {menuOpen ? <X size={26} /> : <Menu size={26} />}
-    </button>
-  </div>
+          {/* Desktop Links */}
+          <div className="hidden md:flex space-x-6 text-sm font-medium">
+            <a href="#about" className="hover:text-blue-400 transition">About</a>
+            <a href="#skills" className="hover:text-blue-400 transition">Skills</a>
+            <a href="#projects" className="hover:text-blue-400 transition">Projects</a>
+            <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
+          </div>
 
-  {/* Mobile Menu */}
-  {menuOpen && (
-    <div className="md:hidden bg-gray-900 px-6 pb-4 flex flex-col gap-4 text-sm font-medium">
-      <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
-      <a href="#skills" onClick={() => setMenuOpen(false)}>Skills</a>
-      <a href="#projects" onClick={() => setMenuOpen(false)}>Projects</a>
-      <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
-    </div>
-  )}
-</nav>
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-white"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="md:hidden bg-gray-900 px-6 pb-4 flex flex-col gap-4 text-sm font-medium">
+            <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
+            <a href="#skills" onClick={() => setMenuOpen(false)}>Skills</a>
+            <a href="#projects" onClick={() => setMenuOpen(false)}>Projects</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
+          </div>
+        )}
+      </nav>
 
 
       {/* Hero */}
@@ -65,18 +65,27 @@ export default function App() {
           I build secure, scalable, and user-friendly applications with clean
           architecture and modern design.
         </p>
-        <div className="mt-10 flex justify-center gap-6">
+        <div className="mt-10 flex flex-wrap justify-center gap-6">
           <a
             href="#projects"
             className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold shadow-lg transition"
           >
             View Projects
           </a>
+
           <a
             href="#contact"
             className="px-8 py-3 border border-gray-700 hover:border-blue-400 rounded-xl font-semibold shadow-lg transition"
           >
             Contact Me
+          </a>
+
+          <a
+            href="/my_CV.pdf"
+            download
+            className="px-8 py-3 bg-white text-black rounded-xl font-semibold shadow-lg hover:bg-gray-200 transition"
+          >
+            Download CV
           </a>
         </div>
       </section>
