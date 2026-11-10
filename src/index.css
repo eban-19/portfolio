@@ -2,6 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
 ::-webkit-scrollbar {
   display: none;
+}
+
+/* Animations for section targeting & smooth scrolling */
+@keyframes sectionTargetGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
+  }
+  25% {
+    box-shadow: 0 0 50px 10px rgba(34, 211, 238, 0.22);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
+  }
+}
+
+@keyframes headingPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(34, 211, 238, 0));
+  }
+  30% {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.85));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(34, 211, 238, 0));
+  }
+}
+
+@keyframes ambientFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes skillPop {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  45% {
+    transform: translateY(-8px) scale(1.08);
+    box-shadow: 0 12px 24px -4px rgba(34, 211, 238, 0.35);
+    border-color: rgba(34, 211, 238, 0.9);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25) translateY(-4px);
+    color: #22d3ee;
+    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.85));
+  }
+}
+
+.animate-section-glow {
+  animation: sectionTargetGlow 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-heading-pulse {
+  animation: headingPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-ambient-flash {
+  animation: ambientFlash 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-skill-pop {
+  animation: skillPop 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-icon-pulse {
+  animation: iconPulse 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Native CSS :target fallback */
+section:target {
+  animation: sectionTargetGlow 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+section:target h2,
+section:target h3 {
+  animation: headingPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
