@@ -14,7 +14,6 @@ export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const highlightTimeoutRef = useRef(null);
-  const activeAnimationRef = useRef(null);
 
   const revealedSectionsRef = useRef({
     about: false,
@@ -29,7 +28,7 @@ export default function App() {
     { name: "Contact", id: "contact" },
   ];
 
-  // Smooth scroll handler with natural inOutCubic easing
+  // Instant, butter-smooth native scroll without JS loop lag
   const scrollToSection = (e, id) => {
     if (e) e.preventDefault();
     setMenuOpen(false);
@@ -37,22 +36,14 @@ export default function App() {
     const element = document.getElementById(id);
     if (!element) return;
 
-    const navHeight = 72;
+    const navHeight = 76;
     const elementPosition = element.getBoundingClientRect().top;
     const targetY = Math.max(0, elementPosition + window.pageYOffset - navHeight);
 
-    if (activeAnimationRef.current) {
-      activeAnimationRef.current.pause?.();
-    }
-
-    const scrollTracker = { y: window.scrollY };
-    activeAnimationRef.current = animate(scrollTracker, {
-      y: targetY,
-      duration: 800,
-      ease: "inOutCubic",
-      onUpdate: () => {
-        window.scrollTo(0, scrollTracker.y);
-      },
+    // Native smooth scroll starts instantly with zero compositor lag
+    window.scrollTo({
+      top: targetY,
+      behavior: "smooth",
     });
 
     if (highlightTimeoutRef.current) {
@@ -61,10 +52,8 @@ export default function App() {
     setHighlightedSection(null);
 
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setHighlightedSection(id);
-        setActiveSection(id);
-      });
+      setHighlightedSection(id);
+      setActiveSection(id);
     });
 
     highlightTimeoutRef.current = setTimeout(() => {
@@ -79,7 +68,7 @@ export default function App() {
     animate(".hero-motion-word", {
       translateY: ["110%", "0%"],
       opacity: [0, 1],
-      delay: stagger(120, { start: 150 }),
+      delay: stagger(120, { start: 100 }),
       ease: "outCubic",
       duration: 850,
     });
@@ -96,13 +85,13 @@ export default function App() {
       translateY: [20, 0],
       scale: [0.92, 1],
       opacity: [0, 1],
-      delay: stagger(80, { start: 600 }),
+      delay: stagger(80, { start: 550 }),
       ease: "outBack",
       duration: 700,
     });
   }, []);
 
-  // Scroll-triggered motion reveals
+  // Scroll-triggered motion reveals with IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -113,20 +102,20 @@ export default function App() {
           if (id === "about" && !revealedSectionsRef.current.about) {
             revealedSectionsRef.current.about = true;
 
+            animate(".about-badge", {
+              scale: [0.85, 1],
+              opacity: [0, 1],
+              delay: 80,
+              ease: "outBack",
+              duration: 600,
+            });
+
             animate(".about-title-word", {
               translateY: ["110%", "0%"],
               opacity: [0, 1],
-              delay: stagger(90),
+              delay: stagger(90, { start: 120 }),
               ease: "outCubic",
               duration: 750,
-            });
-
-            animate(".about-badge", {
-              scale: [0.8, 1],
-              opacity: [0, 1],
-              delay: 200,
-              ease: "outBack",
-              duration: 600,
             });
 
             animate(".about-bio-card", {
@@ -140,7 +129,7 @@ export default function App() {
             animate(".about-pillar-card", {
               translateY: [30, 0],
               opacity: [0, 1],
-              delay: stagger(100, { start: 350 }),
+              delay: stagger(120, { start: 350 }),
               ease: "outCubic",
               duration: 750,
             });
@@ -160,16 +149,16 @@ export default function App() {
             animate(".skill-category-group", {
               translateY: [25, 0],
               opacity: [0, 1],
-              delay: stagger(120, { start: 150 }),
+              delay: stagger(120, { start: 120 }),
               ease: "outCubic",
               duration: 700,
             });
 
             animate(".skill-badge-item", {
-              translateY: [30, 0],
+              translateY: [35, 0],
               scale: [0.85, 1],
               opacity: [0, 1],
-              delay: stagger(35, { from: "center", start: 250 }),
+              delay: stagger(40, { from: "center", start: 200 }),
               ease: "outBack",
               duration: 650,
             });
@@ -189,23 +178,23 @@ export default function App() {
             animate(".contact-card", {
               translateY: [30, 0],
               opacity: [0, 1],
-              delay: 200,
+              delay: 180,
               ease: "outCubic",
               duration: 750,
             });
 
             animate(".contact-social-icon", {
-              scale: [0.4, 1],
+              scale: [0.35, 1],
               rotate: [-20, 0],
               opacity: [0, 1],
-              delay: stagger(90, { start: 350 }),
+              delay: stagger(90, { start: 300 }),
               ease: "outElastic(1.3, 0.6)",
               duration: 750,
             });
           }
         });
       },
-      { threshold: 0.18 }
+      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
     );
 
     ["about", "skills", "contact"].forEach((id) => {
@@ -228,11 +217,11 @@ export default function App() {
       });
 
       animate(".skill-badge-item", {
-        translateY: [-10, 0],
-        scale: [0.94, 1],
-        delay: stagger(30, { from: "center" }),
+        translateY: [-12, 0],
+        scale: [0.92, 1],
+        delay: stagger(35, { from: "center" }),
         ease: "outElastic(1.2, 0.7)",
-        duration: 600,
+        duration: 650,
       });
     }
 
@@ -324,13 +313,7 @@ export default function App() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              const tracker = { y: window.scrollY };
-              animate(tracker, {
-                y: 0,
-                duration: 750,
-                ease: "inOutCubic",
-                onUpdate: () => window.scrollTo(0, tracker.y),
-              });
+              window.scrollTo({ top: 0, behavior: "smooth" });
               setHighlightedSection(null);
               setActiveSection("");
               window.history.pushState(null, "", " ");
@@ -414,16 +397,16 @@ export default function App() {
           {/* Animated Split-Word Headline */}
           <h2 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
             <span className="inline-block overflow-hidden">
-              <span className="hero-motion-word inline-block">Full-Stack</span>
+              <span className="hero-motion-word inline-block opacity-0">Full-Stack</span>
             </span>{" "}
             <span className="inline-block overflow-hidden">
-              <span className="hero-motion-word inline-block bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+              <span className="hero-motion-word inline-block opacity-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
                 Web Developer
               </span>
             </span>
           </h2>
 
-          <p className="hero-subtext mt-6 max-w-2xl mx-auto text-slate-300 text-lg md:text-xl leading-relaxed">
+          <p className="hero-subtext mt-6 max-w-2xl mx-auto text-slate-300 text-lg md:text-xl leading-relaxed opacity-0">
             I build secure, scalable, and user-friendly applications with clean
             architecture and modern design.
           </p>
@@ -433,7 +416,7 @@ export default function App() {
             <a
               href="#projects"
               onClick={(e) => scrollToSection(e, "projects")}
-              className="hero-cta-btn px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-200 cursor-pointer"
+              className="hero-cta-btn opacity-0 px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/25 transition-all duration-200 cursor-pointer"
             >
               View Projects
             </a>
@@ -441,7 +424,7 @@ export default function App() {
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, "contact")}
-              className="hero-cta-btn px-8 py-3.5 bg-[#111827]/80 hover:bg-[#1a2337] text-slate-200 border border-slate-700/80 hover:border-cyan-500/50 hover:text-white active:scale-95 rounded-xl font-semibold backdrop-blur-sm shadow-md transition-all duration-200 cursor-pointer"
+              className="hero-cta-btn opacity-0 px-8 py-3.5 bg-[#111827]/80 hover:bg-[#1a2337] text-slate-200 border border-slate-700/80 hover:border-cyan-500/50 hover:text-white active:scale-95 rounded-xl font-semibold backdrop-blur-sm shadow-md transition-all duration-200 cursor-pointer"
             >
               Contact Me
             </a>
@@ -449,7 +432,7 @@ export default function App() {
             <a
               href="/my_CV.pdf"
               download
-              className="hero-cta-btn px-8 py-3.5 bg-[#111827]/80 hover:bg-[#1a2337] text-slate-200 border border-slate-700/80 hover:border-slate-500 active:scale-95 rounded-xl font-semibold backdrop-blur-sm shadow-md transition-all duration-200 cursor-pointer"
+              className="hero-cta-btn opacity-0 px-8 py-3.5 bg-[#111827]/80 hover:bg-[#1a2337] text-slate-200 border border-slate-700/80 hover:border-slate-500 active:scale-95 rounded-xl font-semibold backdrop-blur-sm shadow-md transition-all duration-200 cursor-pointer"
             >
               Download CV
             </a>
@@ -470,16 +453,16 @@ export default function App() {
 
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="mb-14 text-center md:text-left">
-            <div className="about-badge inline-flex items-center px-4 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-cyan-300 text-xs font-semibold mb-4 tracking-wider uppercase">
+            <div className="about-badge opacity-0 inline-flex items-center px-4 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-cyan-300 text-xs font-semibold mb-4 tracking-wider uppercase">
               Software Engineer
             </div>
 
             <h3 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
               <span className="inline-block overflow-hidden">
-                <span className="about-title-word inline-block">About</span>
+                <span className="about-title-word inline-block opacity-0">About</span>
               </span>{" "}
               <span className="inline-block overflow-hidden">
-                <span className="about-title-word inline-block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <span className="about-title-word inline-block opacity-0 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   Me
                 </span>
               </span>
@@ -491,11 +474,11 @@ export default function App() {
             />
           </div>
 
-          {/* Redesigned 2-Column About Layout */}
+          {/* 2-Column About Layout */}
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             {/* Main Narrative Card (7 cols) */}
             <div
-              className={`about-bio-card lg:col-span-7 bg-[#111827]/85 backdrop-blur-md p-8 md:p-10 rounded-2xl border transition-all duration-500 shadow-xl ${
+              className={`about-bio-card opacity-0 lg:col-span-7 bg-[#111827]/85 backdrop-blur-md p-8 md:p-10 rounded-2xl border transition-all duration-500 shadow-xl ${
                 highlightedSection === "about"
                   ? "border-cyan-500/60 shadow-[0_0_30px_rgba(56,189,248,0.2)]"
                   : "border-slate-800/80"
@@ -544,7 +527,7 @@ export default function App() {
 
             {/* Feature Pillar Cards (5 cols) */}
             <div className="lg:col-span-5 flex flex-col gap-4">
-              <div className="about-pillar-card bg-[#111827]/85 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80 shadow-lg hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300">
+              <div className="about-pillar-card opacity-0 bg-[#111827]/85 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80 shadow-lg hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-xl bg-cyan-950/60 border border-cyan-800/50 text-cyan-400 shrink-0">
                     <Code2 size={24} />
@@ -558,7 +541,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="about-pillar-card bg-[#111827]/85 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80 shadow-lg hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300">
+              <div className="about-pillar-card opacity-0 bg-[#111827]/85 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80 shadow-lg hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-xl bg-blue-950/60 border border-blue-800/50 text-blue-400 shrink-0">
                     <Layers size={24} />
@@ -572,7 +555,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="about-pillar-card bg-[#111827]/85 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80 shadow-lg hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-300">
+              <div className="about-pillar-card opacity-0 bg-[#111827]/85 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80 shadow-lg hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-300">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-xl bg-indigo-950/60 border border-indigo-800/50 text-indigo-400 shrink-0">
                     <Zap size={24} />
@@ -605,10 +588,10 @@ export default function App() {
           <div className="text-center mb-16">
             <h3 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
               <span className="inline-block overflow-hidden">
-                <span className="skills-title-word inline-block">Skills &</span>
+                <span className="skills-title-word inline-block opacity-0">Skills &</span>
               </span>{" "}
               <span className="inline-block overflow-hidden">
-                <span className="skills-title-word inline-block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <span className="skills-title-word inline-block opacity-0 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   Technologies
                 </span>
               </span>
@@ -623,7 +606,7 @@ export default function App() {
           {/* Organized Skill Categories */}
           <div className="space-y-12">
             {skillCategories.map((cat) => (
-              <div key={cat.id} className="skill-category-group">
+              <div key={cat.id} className="skill-category-group opacity-0">
                 {/* Category Header */}
                 <div className="flex items-center gap-3 mb-6 pb-2 border-b border-slate-800/70">
                   <h4 className="text-lg font-bold text-white tracking-wide">{cat.title}</h4>
@@ -637,7 +620,7 @@ export default function App() {
                   {cat.skills.map((skill) => (
                     <div
                       key={skill.name}
-                      className={`skill-badge-item group bg-[#111827]/85 backdrop-blur-md rounded-2xl p-5 flex flex-col items-center justify-between text-center transition-all duration-300 border border-slate-800/80 shadow-md hover:-translate-y-1.5 hover:shadow-xl cursor-default ${
+                      className={`skill-badge-item opacity-0 group bg-[#111827]/85 backdrop-blur-md rounded-2xl p-5 flex flex-col items-center justify-between text-center transition-all duration-300 border border-slate-800/80 shadow-md hover:-translate-y-1.5 hover:shadow-xl cursor-default ${
                         highlightedSection === "skills"
                           ? "border-cyan-400/80 shadow-[0_0_20px_rgba(56,189,248,0.25)] bg-[#1a2337]"
                           : "hover:border-slate-700 hover:bg-[#151f33]"
@@ -684,10 +667,10 @@ export default function App() {
           <div className="mb-6">
             <h3 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
               <span className="inline-block overflow-hidden">
-                <span className="contact-title-word inline-block">Get In</span>
+                <span className="contact-title-word inline-block opacity-0">Get In</span>
               </span>{" "}
               <span className="inline-block overflow-hidden">
-                <span className="contact-title-word inline-block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <span className="contact-title-word inline-block opacity-0 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   Touch
                 </span>
               </span>
@@ -699,12 +682,12 @@ export default function App() {
             />
           </div>
 
-          <p className="contact-card text-slate-400 mb-10 text-lg">
+          <p className="contact-card opacity-0 text-slate-400 mb-10 text-lg">
             Let’s build something meaningful together.
           </p>
 
           <div
-            className={`contact-card inline-flex items-center justify-center gap-8 bg-[#111827]/80 backdrop-blur-md px-8 py-5 rounded-2xl border transition-all duration-500 shadow-xl ${
+            className={`contact-card opacity-0 inline-flex items-center justify-center gap-8 bg-[#111827]/80 backdrop-blur-md px-8 py-5 rounded-2xl border transition-all duration-500 shadow-xl ${
               highlightedSection === "contact"
                 ? "border-cyan-500/60 shadow-[0_0_30px_rgba(56,189,248,0.25)]"
                 : "border-slate-800/80"
@@ -712,7 +695,7 @@ export default function App() {
           >
             <a
               href="https://github.com/eban-19"
-              className={`contact-social-icon text-slate-300 hover:text-cyan-400 transition-all p-2.5 rounded-xl hover:bg-slate-800 ${
+              className={`contact-social-icon opacity-0 text-slate-300 hover:text-cyan-400 transition-all p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer ${
                 highlightedSection === "contact" ? "text-cyan-400" : ""
               }`}
               target="_blank"
@@ -723,7 +706,7 @@ export default function App() {
             </a>
             <a
               href="https://www.linkedin.com/in/ebisa-sutuma-ba77013a1/"
-              className={`contact-social-icon text-slate-300 hover:text-cyan-400 transition-all p-2.5 rounded-xl hover:bg-slate-800 ${
+              className={`contact-social-icon opacity-0 text-slate-300 hover:text-cyan-400 transition-all p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer ${
                 highlightedSection === "contact" ? "text-cyan-400" : ""
               }`}
               target="_blank"
@@ -734,7 +717,7 @@ export default function App() {
             </a>
             <a
               href="mailto:ebisasutuma@gmail.com"
-              className={`contact-social-icon text-slate-300 hover:text-cyan-400 transition-all p-2.5 rounded-xl hover:bg-slate-800 ${
+              className={`contact-social-icon opacity-0 text-slate-300 hover:text-cyan-400 transition-all p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer ${
                 highlightedSection === "contact" ? "text-cyan-400" : ""
               }`}
               aria-label="Send Email"
@@ -748,13 +731,7 @@ export default function App() {
       {/* Floating Back to Top Button */}
       <button
         onClick={() => {
-          const tracker = { y: window.scrollY };
-          animate(tracker, {
-            y: 0,
-            duration: 750,
-            ease: "inOutCubic",
-            onUpdate: () => window.scrollTo(0, tracker.y),
-          });
+          window.scrollTo({ top: 0, behavior: "smooth" });
           setHighlightedSection(null);
           setActiveSection("");
         }}
