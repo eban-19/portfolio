@@ -24,7 +24,7 @@ const Projects = ({ isHighlighted = false }) => {
         if (entry.isIntersecting && !hasAnimatedRef.current) {
           hasAnimatedRef.current = true;
 
-          // Word slide-up motion
+          // Title word reveal motion
           animate(".project-title-word", {
             translateY: ["110%", "0%"],
             opacity: [0, 1],
@@ -33,18 +33,18 @@ const Projects = ({ isHighlighted = false }) => {
             duration: 750,
           });
 
-          // Cards staggered 3D rise motion
+          // Cards staggered entrance animation
           animate(".project-card-item", {
-            translateY: [50, 0],
-            scale: [0.92, 1],
+            translateY: [45, 0],
+            scale: [0.93, 1],
             opacity: [0, 1],
-            delay: stagger(100, { start: 150 }),
+            delay: stagger(120, { start: 100 }),
             ease: "outCubic",
-            duration: 800,
+            duration: 750,
           });
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
     );
 
     observer.observe(el);
@@ -55,9 +55,9 @@ const Projects = ({ isHighlighted = false }) => {
   useEffect(() => {
     if (isHighlighted) {
       animate(".project-title-word", {
-        translateY: ["50%", "0%"],
+        translateY: ["60%", "0%"],
         opacity: [0.4, 1],
-        delay: stagger(70),
+        delay: stagger(60),
         ease: "outCubic",
         duration: 500,
       });
@@ -65,7 +65,7 @@ const Projects = ({ isHighlighted = false }) => {
       animate(".project-card-item", {
         translateY: [25, 0],
         scale: [0.96, 1],
-        opacity: [0.5, 1],
+        opacity: [0.6, 1],
         delay: stagger(70, { start: 50 }),
         ease: "outCubic",
         duration: 650,
@@ -90,10 +90,10 @@ const Projects = ({ isHighlighted = false }) => {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
             <span className="inline-block overflow-hidden">
-              <span className="project-title-word inline-block">Featured</span>
+              <span className="project-title-word inline-block opacity-0">Featured</span>
             </span>{" "}
             <span className="inline-block overflow-hidden">
-              <span className="project-title-word inline-block bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+              <span className="project-title-word inline-block opacity-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
                 Projects
               </span>
             </span>
@@ -139,7 +139,7 @@ const ProjectCard = ({ project, isSectionHighlighted = false }) => {
   return (
     <>
       <div
-        className={`project-card-item bg-[#111827]/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-cyan-950/30 transition-all duration-300 flex flex-col justify-between border hover:-translate-y-1.5 ${
+        className={`project-card-item opacity-0 bg-[#111827]/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-cyan-950/30 transition-all duration-300 flex flex-col justify-between border hover:-translate-y-1.5 ${
           isSectionHighlighted
             ? "border-cyan-500/50 shadow-[0_0_25px_rgba(56,189,248,0.2)]"
             : "border-slate-800/80 hover:border-cyan-500/40"
@@ -162,7 +162,7 @@ const ProjectCard = ({ project, isSectionHighlighted = false }) => {
                     e.stopPropagation();
                     prev();
                   }}
-                  className="absolute top-1/2 left-2 -translate-y-1/2 bg-slate-950/75 hover:bg-slate-900 text-white p-2 rounded-full shadow-md backdrop-blur-sm transition border border-slate-700/60"
+                  className="absolute top-1/2 left-2 -translate-y-1/2 bg-slate-950/75 hover:bg-slate-900 text-white p-2 rounded-full shadow-md backdrop-blur-sm transition border border-slate-700/60 cursor-pointer"
                   aria-label="Previous image"
                 >
                   <ChevronLeft size={18} />
@@ -172,7 +172,7 @@ const ProjectCard = ({ project, isSectionHighlighted = false }) => {
                     e.stopPropagation();
                     next();
                   }}
-                  className="absolute top-1/2 right-2 -translate-y-1/2 bg-slate-950/75 hover:bg-slate-900 text-white p-2 rounded-full shadow-md backdrop-blur-sm transition border border-slate-700/60"
+                  className="absolute top-1/2 right-2 -translate-y-1/2 bg-slate-950/75 hover:bg-slate-900 text-white p-2 rounded-full shadow-md backdrop-blur-sm transition border border-slate-700/60 cursor-pointer"
                   aria-label="Next image"
                 >
                   <ChevronRight size={18} />
@@ -210,7 +210,7 @@ const ProjectCard = ({ project, isSectionHighlighted = false }) => {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-slate-300 hover:text-cyan-400 font-semibold transition"
+                className="flex items-center gap-1.5 text-slate-300 hover:text-cyan-400 font-semibold transition cursor-pointer"
               >
                 <Github size={16} /> Code
               </a>
@@ -220,7 +220,7 @@ const ProjectCard = ({ project, isSectionHighlighted = false }) => {
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold transition"
+                className="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold transition cursor-pointer"
               >
                 <ExternalLink size={16} /> Live Demo
               </a>
